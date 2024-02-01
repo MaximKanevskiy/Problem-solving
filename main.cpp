@@ -37,8 +37,7 @@ std::vector<std::string> towerBuilder(unsigned nFloors)
 
 int main()
 {
-	auto pyramid = towerBuilder(10);
-
+	auto pyramid = towerBuilder(3);
 	for (const auto& floor : pyramid)
 	{
 		std::cout << floor << std::endl;
