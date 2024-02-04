@@ -1,71 +1,37 @@
 #include <iostream>
+#include <string>
+#include <vector>
 
-class Node
+static std::size_t duplicateCount(const std::string& in)
 {
-private:
-	Node* next;
-public:
-	Node()
+	size_t count = 0;
+	std::vector<char> checked;
+
+	for (int i = 0; i < in.length(); i++)
 	{
-		this->next = nullptr;
-	}
-
-	void setNext(Node* next)
-	{
-		this->next = next;
-	}
-
-	Node* getNext()
-	{
-		return this->next;
-	}
-};
-
-static int getLoopSize(Node* startNode)
-{
-	if (startNode == nullptr)
-	{
-		return 0;
-	}
-
-	Node* turtleptr = startNode;
-	Node* rabbitptr = startNode;
-
-	while (rabbitptr != nullptr && rabbitptr->getNext() != nullptr)
-	{
-		turtleptr = turtleptr->getNext();
-		rabbitptr = rabbitptr->getNext()->getNext();
-
-		if (turtleptr == rabbitptr)
+		for (int j = 0; j < in.length(); j++)
 		{
-			int loopSize = 1;
-			Node* current = turtleptr;
+			char current = tolower(in[j]);
 
-			while (current->getNext() != turtleptr)
+			if (find(checked.begin(), checked.end(), current) != checked.end())
 			{
-				loopSize++;
-				current = current->getNext();
+				continue;
 			}
 
-			return loopSize;
+			if (tolower(in[i]) == current && i != j)
+			{
+				count++;
+				checked.push_back(tolower(in[j]));
+				break;
+			}
 		}
 	}
 
-	return 0;
+	return count;
 }
 
 int main()
 {
-	Node n0, n00, n1, n2, n3, n4;
-
-	n0.setNext(&n00);
-	n00.setNext(&n1);
-	n1.setNext(&n2);
-	n2.setNext(&n3);
-	n3.setNext(&n4);
-	n4.setNext(&n1);
-
-	Node* startNode = &n1;
-	int actual = getLoopSize(startNode);
-	std::cout << actual << std::endl;
+	std::string text = "ABBA";
+	std::cout << duplicateCount(text) << std::endl;
 }
