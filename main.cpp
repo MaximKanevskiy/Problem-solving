@@ -1,37 +1,40 @@
 #include <iostream>
-#include <string>
 #include <vector>
 
-static std::size_t duplicateCount(const std::string& in)
+static bool isValidWalk(std::vector<char> walk) 
 {
-	size_t count = 0;
-	std::vector<char> checked;
-
-	for (int i = 0; i < in.length(); i++)
+	if (walk.size() != 10)
 	{
-		for (int j = 0; j < in.length(); j++)
+		return false;
+	}
+
+	int vertical_balance = 0;
+	int horizontal_balance = 0;
+
+	for (const auto& direction : walk)
+	{
+		switch (direction)
 		{
-			char current = tolower(in[j]);
-
-			if (find(checked.begin(), checked.end(), current) != checked.end())
-			{
-				continue;
-			}
-
-			if (tolower(in[i]) == current && i != j)
-			{
-				count++;
-				checked.push_back(tolower(in[j]));
-				break;
-			}
+		case 'n':
+			vertical_balance++;
+			break;
+		case 's':
+			vertical_balance--;
+			break;
+		case 'w':
+			horizontal_balance++;
+			break;
+		case 'e':
+			horizontal_balance--;
+			break;
 		}
 	}
 
-	return count;
+	return vertical_balance == 0 && horizontal_balance == 0;
 }
 
 int main()
 {
-	std::string text = "ABBA";
-	std::cout << duplicateCount(text) << std::endl;
+	std::vector correct_walk = { 'e','e','e','w','n','s','n','s','e','w' };
+	std::cout << isValidWalk(correct_walk) << std::endl;
 }
